@@ -40,7 +40,7 @@ export default (results, returnValue = {}) => {
         return '';
     }
 
-    const { ruleMetadata = {} } = returnValue;
+    const { ruleMetadata = {}, cwd } = returnValue;
 
     return `
 <!doctype html>
@@ -66,6 +66,8 @@ export default (results, returnValue = {}) => {
     <script>
       window.StylelintResults = ${serialize(formatStylelintResults(results))};
       window.RuleMetadata = ${serialize(ruleMetadata)};
+      window.StylelintCwd = ${serialize(cwd || rootPath)};
+      window.StylelintCreateTime = ${Date.now()};
     </script>
     <script type="text/babel" data-presets="react">
         ${readAsset('report.jsx')}

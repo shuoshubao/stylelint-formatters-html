@@ -15,11 +15,11 @@ npm i -D stylelint-formatters-html
 # 使用
 
 ```
-stylelint -o StylelintReport.html --aei --custom-formatter node_modules/stylelint-formatters-html **/*.{css,less,scss,sass}
+stylelint -o StylelintReport.html --custom-formatter stylelint-formatters-html **/*.{css,less,scss,sass} 2>/dev/null
 ```
 
 # 说明
 
 - 纯 ESM 包, 需要 node >= 18、stylelint >= 16.
 - 报告页的 React / antd / babel 走 cdn, 打开报告需要联网.
-- 本地看 demo: 启动静态服务后访问 `index.html` (`npx serve .`), babel 需要用 http 协议加载 `src/report.jsx`; 实际产出的报告是单文件内联的, 直接双击打开即可.
+- 本地看 demo: 启动静态服务后访问 `index.html`, babel 需要用 http 协议加载 `src/report.jsx`; 实际产出的报告是单文件内联的, 直接双击打开即可.

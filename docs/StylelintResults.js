@@ -1,3 +1,14 @@
+window.StylelintCwd = '/Users/shuoshubao/Documents/Github/demo-project';
+
+window.StylelintCreateTime = 1760000000000;
+
+window.RuleMetadata = {
+    'color-hex-length': { url: 'https://stylelint.io/user-guide/rules/color-hex-length', fixable: true },
+    'property-case': { url: 'https://stylelint.io/user-guide/rules/property-case', fixable: true },
+    'length-zero-no-unit': { url: 'https://stylelint.io/user-guide/rules/length-zero-no-unit', fixable: true },
+    'block-no-empty': { url: 'https://stylelint.io/user-guide/rules/block-no-empty' }
+};
+
 window.StylelintResults = [
     {
         source: 'src/util/2.css',
@@ -26,7 +37,7 @@ window.StylelintResults = [
     },
     {
         source: 'src/containers/demo2/index.less',
-        css: '.baz {\n    COLOR: blue;\n    margin: 0px;\n}\n',
+        css: '.baz {\n    COLOR: blue;\n    margin: 0px;\n}\n.empty {}\n',
         warnings: [
             {
                 line: 2,
@@ -41,6 +52,26 @@ window.StylelintResults = [
                 rule: 'length-zero-no-unit',
                 severity: 'warning',
                 text: 'Unexpected unit (length-zero-no-unit)'
+            },
+            {
+                line: 5,
+                column: 8,
+                rule: 'block-no-empty',
+                severity: 'error',
+                text: 'Empty block (block-no-empty)'
+            }
+        ]
+    },
+    {
+        source: 'src/styles/broken.css',
+        css: '',
+        warnings: [
+            {
+                line: 2,
+                column: 13,
+                rule: 'CssSyntaxError',
+                severity: 'error',
+                text: 'Unclosed block (CssSyntaxError)'
             }
         ]
     }
