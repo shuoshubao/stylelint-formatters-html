@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>StyleLint Report</title>
@@ -156,14 +156,14 @@
         </div>
         <mtd-card
           :class="[
-                    'box-card',
-                    item.close ? 'close' : 'open',
-                    {
-                        'is-error': item.errorCount,
-                        'is-warning': item.errorCount === 0 && item.warningCount,
-                        'is-success': item.errorCount + item.warningCount === 0
-                    }
-                ]"
+          'box-card',
+          item.close ? 'close' : 'open',
+          {
+            'is-error': item.errorCount,
+            'is-warning': item.errorCount === 0 && item.warningCount,
+            'is-success': item.errorCount + item.warningCount === 0
+          }
+        ]"
           :body-style="{ padding: 0 }"
           shadow="never"
           v-for="(item, index) in tableData"

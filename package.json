@@ -4,11 +4,10 @@
     "description": "stylelint-formatters-html",
     "main": "index.js",
     "repository": {
-        "url": "https://github.com/shuoshubao/nbfe",
         "type": "git",
-        "directory": "packages/stylelint-formatter-html"
+        "url": "https://github.com/shuoshubao/stylelint-formatters-html"
     },
-    "author": "shuoshubao <759979885@qq.com>",
+    "author": "shuoshubao <shuoshubao@gmail.com>",
     "license": "MIT",
     "keywords": [
         "stylelint",
