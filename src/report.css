@@ -1,0 +1,141 @@
+html,
+body {
+    margin: 0;
+}
+
+#root {
+    padding: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.flex-none {
+    flex: none;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.text-xs {
+    font-size: 12px;
+}
+
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.color-error {
+    color: #f56c6c;
+}
+
+.color-warning {
+    color: #e6a23c;
+}
+
+.file-card {
+    border: 0;
+    border-radius: 0;
+}
+
+.file-card .ant-card-head {
+    min-height: auto;
+    padding: 0 8px;
+    user-select: none;
+}
+
+.file-card .ant-card-head-title {
+    padding: 5px 0;
+}
+
+.file-card.is-success .ant-card-head {
+    color: #67c23a;
+    background: #f0f9eb;
+    border-color: #c2e7b0;
+}
+
+.file-card.is-warning .ant-card-head {
+    color: #e6a23c;
+    background: #fdf6ec;
+    border-color: #f5dab1;
+}
+
+.file-card.is-error .ant-card-head {
+    color: #f56c6c;
+    background: #fef0f0;
+    border-color: #fbc4c4;
+}
+
+.file-card .ant-table-cell {
+    padding: 5px 10px !important;
+}
+
+.file-card .anticon-code {
+    font-size: 14px;
+}
+
+.warning-text {
+    margin: 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+}
+
+.css-source {
+    counter-reset: line;
+    padding-left: 24px;
+}
+
+.css-source pre {
+    position: relative;
+    margin: 0;
+    min-height: 20px;
+    line-height: 20px;
+    padding-left: 0.5em;
+    border-left: 1px solid #e1e4e8;
+}
+
+.css-source pre::before {
+    content: counter(line);
+    counter-increment: line;
+    position: absolute;
+    top: 0;
+    left: -2.5em;
+    width: 2.5em;
+    padding-right: 0.5em;
+    text-align: right;
+    color: #8c8c8c;
+}
+
+.css-source pre.highlight,
+.css-source pre.highlight::before {
+    background-color: #ffeef0;
+}
+
+/* antd 的 Modal footer 默认右对齐, 这里放的是 Alert, 要左对齐 */
+.code-modal .ant-modal-footer {
+    text-align: start;
+}

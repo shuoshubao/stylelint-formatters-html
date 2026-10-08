@@ -1,66 +1,76 @@
-const { readFileSync } = require('fs');
-const { relative, resolve } = require('path');
-const stripAnsi = require('strip-ansi');
-const { generateDocument } = require('@nbfe/js2html');
+import { readFileSync } from 'node:fs';
+import { relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import stripAnsi from 'strip-ansi';
 
 const rootPath = process.cwd();
 
+const readAsset = fileName => {
+    return readFileSync(fileURLToPath(new URL(`src/${fileName}`, import.meta.url))).toString();
+};
+
 /**
  * source => 相对路径
- * source => 删掉
- * output => 删掉
+ * _postcssResult => css 源码, 报告页查看源码用
+ * warnings[].text => 去掉 ansi 颜色码
  */
 const formatStylelintResults = (results = []) => {
-    results.forEach(v => {
-        const { source, _postcssResult = '' } = v;
-        v.source = relative(rootPath, source);
-        v.css = _postcssResult.toString();
-        v.warnings = v.warnings.map(v2 => {
-            return {
-                ...v2,
-                text: stripAnsi(v2.text)
-            };
-        });
-        delete v._postcssResult;
+    return results.map(item => {
+        const { source, _postcssResult, warnings = [] } = item;
+        return {
+            source: relative(rootPath, source),
+            css: _postcssResult ? _postcssResult.toString() : '',
+            warnings: warnings.map(item2 => {
+                return {
+                    ...item2,
+                    text: stripAnsi(item2.text)
+                };
+            })
+        };
     });
 };
 
-const getFileContent = fileName => {
-    return readFileSync(resolve(__dirname, 'lib', fileName)).toString();
+// 内联进 <script> 的数据需要转义, 否则 </script> 之类的内容会提前闭合标签
+const serialize = data => {
+    return JSON.stringify(data).replace(/</g, '\\u003c');
 };
 
-module.exports = (results, returnValue) => {
-    if (results.every(v => v.warnings.length === 0)) {
+export default (results, returnValue = {}) => {
+    if (results.every(item => item.warnings.length === 0)) {
         return '';
     }
 
-    formatStylelintResults(results);
+    const { ruleMetadata = {} } = returnValue;
 
-    return generateDocument({
-        title: 'StylelintReport',
-        link: [
-            {
-                rel: 'icon',
-                href: 'https://stylelint.io/img/favicon.ico'
-            }
-        ],
-        style: [
-            'https://static.meituan.net/bs/@ss/mtd-vue/0.3.5/lib/theme2/index.css',
-            {
-                text: getFileContent('style.css')
-            }
-        ],
-        script: [
-            { src: 'https://static.meituan.net/bs/vue/2.6.11/vue.min.js' },
-            { src: 'https://static.meituan.net/bs/@ss/mtd-vue/0.3.5/lib/index.js' },
-            { src: 'https://static.meituan.net/bs/lodash/4.17.15/lodash.min.js' },
-            {
-                text: `window.StylelintResults = ${JSON.stringify(results).replace(/</g, '\\u003c')};`
-            },
-            {
-                text: getFileContent('script.js')
-            }
-        ],
-        bodyHtml: [getFileContent('template.html')]
-    });
+    return `
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stylelint Report</title>
+    <link rel="icon" href="https://stylelint.io/img/favicon.svg" />
+    <link rel="stylesheet" href="https://registry.npmmirror.com/antd/6.6.4/files/dist/reset.css" />
+    <script src="https://registry.npmmirror.com/react/18.3.1/files/umd/react.production.min.js"></script>
+    <script src="https://registry.npmmirror.com/react-dom/18.3.1/files/umd/react-dom.production.min.js"></script>
+    <script src="https://registry.npmmirror.com/dayjs/1.11.13/files/dayjs.min.js"></script>
+    <script src="https://registry.npmmirror.com/antd/6.6.4/files/dist/antd.min.js"></script>
+    <script src="https://registry.npmmirror.com/@ant-design/icons/6.3.4/files/dist/index.umd.min.js"></script>
+    <script src="https://registry.npmmirror.com/@babel/standalone/7.26.4/files/babel.min.js"></script>
+    <style>
+        ${readAsset('report.css')}
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.StylelintResults = ${serialize(formatStylelintResults(results))};
+      window.RuleMetadata = ${serialize(ruleMetadata)};
+    </script>
+    <script type="text/babel" data-presets="react">
+        ${readAsset('report.jsx')}
+    </script>
+  </body>
+</html>
+`;
 };
