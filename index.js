@@ -55,7 +55,7 @@ module.exports = (results, returnValue) => {
       { src: 'https://static.meituan.net/bs/@ss/mtd-vue/0.3.5/lib/index.js' },
       { src: 'https://static.meituan.net/bs/lodash/4.17.15/lodash.min.js' },
       {
-        text: `window.StylelintResults = ${JSON.stringify(results)};`
+        text: `window.StylelintResults = ${JSON.stringify(results).replace(/</g, '\\u003c')};`
       },
       {
         text: getFileContent('script.js')
